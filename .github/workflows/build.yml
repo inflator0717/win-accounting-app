@@ -1,0 +1,38 @@
+name: Build and Package Electron App
+
+on:
+  push:
+    branches:
+      - main  # 当代码推送到 `main` 分支时触发构建
+  pull_request:
+    branches:
+      - main  # 当 Pull Request 合并到 `main` 时触发构建
+
+jobs:
+  build:
+    runs-on: macos-latest  # 在 macOS 环境下运行（用于打包 Windows 和 macOS 应用）
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2  # 检出仓库代码
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2  # 设置 Node.js 环境
+      with:
+        node-version: '16'  # 使用 Node.js 版本 16
+
+    - name: Install dependencies
+      run: npm install  # 安装依赖
+
+    - name: Build Electron app for Windows
+      env:
+        GH_TOKEN: ${{ secrets.GH_TOKEN }}  # 使用 GH_TOKEN
+      run: npm run build -- --win --x64 --dir  # 执行打包命令，为 Windows 平台打包应用
+
+    - name: Upload Windows build artifact
+      uses: actions/upload-artifact@v4  # 上传构建产物
+      with:
+        name: windows-build
+        path: dist/win-unpacked  # 上传打包后的 Windows 应用文件夹
+    - name: List build directory
+      run: ls -R dist
