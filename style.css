@@ -1,0 +1,110 @@
+
+
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center; /* 修改为 flex-start 以使内容从顶部开始排列 */
+    min-height: 100vh; /* 修改为 min-height 以确保内容至少占满视口高度 */
+    background-color: #f4f4f4;
+    flex-direction: column;
+    overflow-y: auto; /* 允许垂直滚动 */
+  }
+  
+  h1 {
+    align-self: flex-start;
+    margin: 20px;
+  }
+  
+  .button-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .button-container button {
+    width: 200px;
+    padding: 10px;
+    margin: 10px 0;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .button-container button:hover {
+    background-color: #0056b3;
+  }
+  
+  .hidden {
+    display: none;
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .form-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .form-group label {
+    width: 100px;
+    margin-right: 10px;
+  }
+  
+  form input, form select, form button {
+    margin: 5px 0;
+  }
+
+
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  table, th, td {
+    border: 1px solid #ddd;
+  }
+  
+  th, td {
+    padding: 8px;
+    text-align: left;
+  }
+  
+  th {
+    background-color: #f2f2f2;
+  }
+  
+  tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  tbody tr:hover {
+    background-color: #f1f1f1;
+  }
+  
+  button {
+    margin-top: 20px;
+  }
+
+
+  
+  .form-container {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .form-container form {
+    margin-right: 20px;
+  }

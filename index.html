@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>记账应用</title>
+  <link rel="stylesheet" href="style.css">
+ 
+</head>
+<body>
+  <!-- 记账入口页面 -->
+  <div id="entry-page" class="button-container">
+    <button onclick="showInitialPage('company')">公司账目</button>
+    <button onclick="showInitialPage('family')">家庭账目</button>
+    <button id="exitAppButton">退出</button> 
+  </div>
+
+      <!-- 初始页面 -->
+  <div id="initial-page" class="button-container hidden">
+    <button onclick="showPage('add-record-page')">添加账目</button>
+    <button onclick="showPage('delete-record-page')">删除账目</button>
+    <button onclick="showPage('detailed-query-page')">具体查询</button>
+    <button onclick="showPage('query-by-card-page')">银行卡查询</button>
+    <!-- <button onclick="showPage('query-by-category-page')">按项目类别查询</button>
+    <button onclick="showPage('query-by-date-page')">按日期范围查询</button> -->
+    <button onclick="showPage('query-statistics-page','category-stats','card-stats')">统计概览</button>
+    <button onclick="exportExcel()">导出Excel</button>
+    <button onclick="returnToEntryPage()">返回</button>
+    
+    
+  </div>
+
+   <!-- 添加账目页面 -->
+   <div id="add-record-page" class="hidden">
+  
+    <h2>添加账目</h2>
+    <form id="record-form">
+      <div class="form-group">
+        <label for="category">*项目类别:</label>
+        <input type="text" id="category" name="category" required>
+      </div>
+      <div class="form-group">
+        <label for="date">*日期:</label>
+        <input type="date" id="date" name="date" required>
+      </div>
+      <div class="form-group">
+        <label for="type">*类型:</label>
+        <select id="type" name="type" required>
+          <option value="收入">收入</option>
+          <option value="支出">支出</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="use">*用途:</label>
+        <input type="text" id="use" name="use" required>
+      </div>
+      <div class="form-group">
+        <label for="label ">&nbsp;标签:</label>
+        <input type="text" id="label" name="label">
+      </div>
+      <div class="form-group">
+        <label for="editor ">&nbsp;经办人:</label>
+        <input type="text" id="editor" name="editor">
+      </div>
+      <div class="form-group">
+        <label for="amount">*金额:</label>
+        <input type="number" id="amount" name="amount" required>
+      </div>
+      <div class="form-group">
+        <label for="card">*银行卡:</label>
+        <input type="text" id="card" name="card">
+      </div>
+      <button type="submit">添加记录</button>
+    </form>
+    <!-- <form id="tag-form">
+      <label for="tag">标签:</label>
+      <input type="text" id="tag" name="tag" required>
+      <button type="submit">添加标签</button>-->
+    <button onclick="showPage('initial-page')">返回</button> 
+    <hr>
+
+    <h2>当前记录</h2>
+    
+    <table id="records-table">
+      <thead>
+        <tr>
+          <th>项目类别</th>
+          <th>日期</th>
+          <th>类型</th>
+          <th>用途</th>
+          <th>金额</th>
+          <th>银行卡</th>
+          <th>标签</th>
+          <th>经办人</th>
+        </tr>
+      </thead>
+      <tbody>
+        
+      </tbody>
+    </table>
+    
+  
+     
+    
+  </div>
+
+  <!-- 查询统计页面 -->
+  <div id="query-statistics-page" class="hidden">
+    <h2>统计概览</h2>
+    <div id="category-stats">
+      <h3>按项目类别统计</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>项目类别</th>
+            <th>收入</th>
+            <th>支出</th>
+            <th>合计</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- 统计数据将显示在这里 -->
+        </tbody>
+      </table>
+    </div>
+    <div id="card-stats">
+      <h3>按银行卡统计</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>银行卡</th>
+            <th>收入</th>
+            <th>支出</th>
+            <th>合计</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- 统计数据将显示在这里 -->
+        </tbody>
+      </table>
+    </div>
+    <button onclick="showPage('initial-page')">返回</button>
+  </div>
+
+   
+  <!-- 按项目类别查询页面 -->
+  <div id="query-by-category-page" class="hidden">
+    <h2>选择项目类别进行查询</h2>
+    <form id="query-form">
+      <label for="category-select">项目类别:</label>
+      <select id="category-select" name="category-select" required></select>
+      <button type="submit">查询</button>
+    </form>
+    <hr>
+    <h2>查询结果</h2>
+    <table id="query-results">
+      <thead>
+        <tr>
+          <th>项目类别</th>
+          <th>日期</th>
+          <th>类型</th>
+          <th>用途</th>
+          <th>金额</th>
+          <th>银行卡</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- 查询结果将显示在这里 -->
+      </tbody>
+    </table>
+    <button onclick="showPage('initial-page')">返回</button>
+  </div>
+
+  <!-- 按日期范围查询页面 -->
+  <div id="query-by-date-page" class="hidden">
+    <h2>选择日期范围进行查询</h2>
+    <form id="query-form-date">
+      <label for="start-date">起始日期:</label>
+      <input type="date" id="start-date" name="start-date" required>
+      <label for="end-date">截止日期:</label>
+      <input type="date" id="end-date" name="end-date" required>
+      <button type="submit">查询</button>
+    </form>
+    <hr>
+    <h2>查询结果</h2>
+    <table id="query-results-date">
+      <thead>
+        <tr>
+          <th>项目类别</th>
+          <th>日期</th>
+          <th>类型</th>
+          <th>用途</th>
+          <th>金额</th>
+          <th>银行卡</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- 查询结果将显示在这里 -->
+      </tbody>
+    </table>
+    <button onclick="showPage('initial-page')">返回</button>
+  </div>
+
+  <!-- 具体查询页面 -->
+  <div id="detailed-query-page" class="hidden">
+    <h2>选择项目类别和日期范围进行查询</h2>
+    <form id="detailed-query-form">
+      <label for="category-select">项目类别:</label>
+      <select id="category-select01" name="category-select" ></select>
+      <label for="start-date">起始日期:</label>
+      <input type="date" id="start-date01" name="start-date" required>
+      <label for="end-date">截止日期:</label>
+      <input type="date" id="end-date01" name="end-date" required>
+      <button type="submit">查询</button>
+    </form>
+    <div class="form-container">
+    <form id="usage-form">
+      <label for="usage-select">用途:</label>
+      <select id="usage-select" name="usage-select" required></select>
+      <button type="submit">按用途查询</button>
+    </form>
+    <form id="label-form">
+      <label for="label-select">标签:</label>
+      <select id="label-select" name="label-select"></select>
+      <button type="submit">按标签查询</button>
+    </form>
+    <form id="editor-form">
+      <label for="editor-select">经办人:</label>
+      <select id="editor-select" name="editor-select"></select>
+      <button type="submit">按经办人查询</button>
+    </form>
+  </div>
+
+    
+    <hr>
+    <h2>查询结果</h2>
+    <table id="detailed-query-results">
+      <thead>
+        <tr>
+          <th>项目类别</th>
+          <th>日期</th>
+          <th>类型</th>
+          <th>用途</th>
+          <th>金额</th>
+          <th>银行卡</th>
+          <th>标签</th>
+          <th>经办人</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- 查询结果将显示在这里 -->
+      </tbody>
+    </table>
+    <h2>统计结果</h2>
+    <table id="detailed-query-stats">
+      <thead>
+        <tr>
+          <th>收入</th>
+          <th>支出</th>
+          <th>合计</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- 统计结果将显示在这里 -->
+      </tbody>
+    </table>
+    <button onclick="showPage('initial-page')">返回</button>
+  </div>
+
+   <!-- 银行卡查询页面 -->
+   <div id="query-by-card-page" class="hidden">
+    <h2>选择银行卡进行查询</h2>
+    <form id="query-form-card">
+      <label for="card-select">银行卡:</label>
+      <select id="card-select" name="card-select" required></select>
+      <label for="start-date">起始日期:</label>
+      <input type="date" id="start-date02" name="start-date" required>
+      <label for="end-date">截止日期:</label>
+      <input type="date" id="end-date02" name="end-date" required>
+      <button type="submit">查询</button>
+    </form>
+    <hr>
+    <h2>查询结果</h2>
+    <table id="query-results-card">
+      <thead>
+        <tr>
+          <th>项目类别</th>
+          <th>日期</th>
+          <th>类型</th>
+          <th>用途</th>
+          <th>金额</th>
+          <th>银行卡</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- 查询结果将显示在这里 -->
+      </tbody>
+    </table>
+    <h2>统计结果</h2>
+    <table id="query-stats-card">
+      <thead>
+        <tr>
+          <th>收入</th>
+          <th>支出</th>
+          <th>合计</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- 统计结果将显示在这里 -->
+      </tbody>
+    </table>
+    <button onclick="showPage('initial-page')">返回</button>
+  </div>
+
+    <!-- 删除账目页面 -->
+    <div id="delete-record-page" class="hidden">
+        <h2>删除账目</h2>
+        <form id="delete-form">
+          <label for="record-select">选择账目:</label>
+          <select id="record-select" name="record-select" required></select>
+          <button type="submit">删除</button>
+        </form>
+        <button onclick="showPage('initial-page')">返回</button>
+      </div>
+
+<script src="renderer.js"></script>
+</body>
+</html>
