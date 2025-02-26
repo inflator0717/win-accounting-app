@@ -10,7 +10,7 @@ on:
 
 jobs:
   build:
-    runs-on: macos-latest  # 在 macOS 环境下运行（用于打包 Windows 和 macOS 应用）
+    runs-on: windows-latest  # 在 macOS 环境下运行（用于打包 Windows 和 macOS 应用）
 
     steps:
     - name: Checkout code
