@@ -15,6 +15,7 @@
     },
     "win": {
       "target": "nsis",
+      "arch": ["x64"],
       "icon": "build/icons/app.ico"
     },
     "mac": {
