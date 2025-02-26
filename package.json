@@ -11,7 +11,7 @@
     "appId": "com.mycompany.myaccountingapp",
     "productName": "My Accounting App",
     "directories": {
-      "output": "dist"
+      "output": "build"
     },
     "win": {
       "target": "nsis",
